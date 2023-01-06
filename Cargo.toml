@@ -1,9 +1,9 @@
 [package]
 name = "wasm-server-runner"
-version = "0.2.4"
+version = "0.4.0"
 edition = "2021"
 readme = "README.md"
-repository = "https://github.com/jakobhellermann/wasm-server-runner/tree/main"
+repository = "https://github.com/jakobhellermann/wasm-server-runner/"
 license = "MIT"
 keywords = ["web", "wasm", "devtools"]
 categories = ["command-line-utilities", "development-tools", "development-tools::cargo-plugins", "wasm", "web-programming"]
@@ -17,8 +17,11 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 wasm-bindgen-cli-support = "0.2"
 
 axum = { version = "0.5", default-features = false, features = ["http1", "headers"] }
+axum-server = { version = "0.4", features = ["tls-rustls"] }
+axum-server-dual-protocol = "0.2"
 tokio = { version = "1.11", default-features = false, features = ["rt-multi-thread"] }
-tower-http = { version = "0.2", features = ["fs", "trace"] }
+tower-http = { version = "0.3", features = ["compression-full", "fs", "set-header", "trace"] }
 tower = "0.4"
 fastrand = "1.5"
-flate2 = "1.0"
+brotli = { version = "3", default-features = false, features = ["std"]}
+rcgen = { version = "0.9", default-features = false }

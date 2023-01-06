@@ -13,8 +13,6 @@
         html {
             margin: 0;
             padding: 0;
-            width: 100vw;
-            height: 100vh;
         }
 
         canvas {
@@ -24,11 +22,10 @@
 </head>
 
 <body>
+    <script src="./api/wasm.js"></script>
     <script type="module">
-        import init from "./api/wasm.js";
-
         async function run() {
-            await init("/api/wasm.wasm");
+            await wasm_bindgen("/api/wasm.wasm");
         }
 
         const reloadInterval = 1000;
@@ -52,6 +49,13 @@
 
         run();
         startReloadInterval();
+    </script>
+
+    <script>
+        document.body.addEventListener("contextmenu", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+        });
     </script>
 
     <script>

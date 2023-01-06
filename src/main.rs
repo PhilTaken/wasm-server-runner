@@ -19,8 +19,14 @@ fn main() -> Result<(), anyhow::Error> {
     let title = std::env::var("CARGO_PKG_NAME").unwrap_or_else(|_| "".to_string());
     let address =
         std::env::var("WASM_SERVER_RUNNER_ADDRESS").unwrap_or_else(|_| "127.0.0.1".to_string());
+    let directory =
+        std::env::var("WASM_SERVER_RUNNER_DIRECTORY").unwrap_or_else(|_| String::from("."));
+    let https =
+        std::env::var("WASM_SERVER_RUNNER_HTTPS").unwrap_or_else(|_| String::from("0")) == "1";
+    let no_module =
+        std::env::var("WASM_SERVER_RUNNER_NO_MODULE").unwrap_or_else(|_| String::from("0")) == "1";
 
-    let options = Options { title, address };
+    let options = Options { title, address, directory, https, no_module };
 
     let wasm_file = std::env::args()
         .nth(1)
@@ -30,7 +36,7 @@ fn main() -> Result<(), anyhow::Error> {
     let is_wasm_file = wasm_file.extension().map_or(false, |e| e == "wasm");
     ensure!(is_wasm_file, "expected to be run with a wasm target");
 
-    let output = wasm_bindgen::generate(&wasm_file)?;
+    let output = wasm_bindgen::generate(&options, &wasm_file)?;
 
     info!("compressed wasm output is {} large", pretty_size(output.compressed_wasm.len()));
 
